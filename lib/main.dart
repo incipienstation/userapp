@@ -18,6 +18,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Container(
+          child: Text('안녕'),
+          color: Colors.blue,
+        ),
+      ),
+    );
   }
 }
