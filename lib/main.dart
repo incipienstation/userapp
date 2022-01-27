@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'utils/firebase_options.dart';
+import 'package:userapp/controller/root_controller.dart';
+
+import 'firebase_options.dart';
+import 'package:get/get.dart';
+import './page/all.dart';
 
 
 void main() async {
@@ -10,30 +14,17 @@ void main() async {
   );
 
   runApp(
-    MaterialApp(
-      home: MyApp()
+    GetMaterialApp(
+      initialRoute: '/',
+      initialBinding: BindingsBuilder((){
+        Get.put(RootController());
+      }),
+      getPages: [
+        GetPage(name: '/', page: () => const Home()),
+        GetPage(name: '/stores', page: () => StoreListNavigation()),
+        GetPage(name: '/mypage', page: () => MyPage()),
+        GetPage(name: '/order', page: () => OrderPage()),
+      ],
     )
   );
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Container(
-          child: Text('안녕'),
-          color: Colors.blue,
-        ),
-      ),
-    );
-  }
 }
