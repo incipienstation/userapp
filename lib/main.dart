@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:userapp/controller/root_controller.dart';
-
 import 'firebase_options.dart';
 import 'package:get/get.dart';
+
+import 'package:userapp/controller/root_controller.dart';
+
 import './page/all.dart';
+
+import './utils/theme.dart' as style;
 
 
 void main() async {
@@ -15,16 +18,11 @@ void main() async {
 
   runApp(
     GetMaterialApp(
-      initialRoute: '/',
+      theme: style.theme,
+      home: Home(),
       initialBinding: BindingsBuilder((){
         Get.put(RootController());
       }),
-      getPages: [
-        GetPage(name: '/', page: () => const Home()),
-        GetPage(name: '/stores', page: () => StoreListNavigation()),
-        GetPage(name: '/mypage', page: () => MyPage()),
-        GetPage(name: '/order', page: () => OrderPage()),
-      ],
     )
   );
 }

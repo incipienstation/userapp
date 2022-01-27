@@ -1,5 +1,5 @@
 export 'home.dart';
-export 'stores.dart';
-export 'stores.dart';
-export 'mypage.dart';
-export 'order.dart';
+export 'home/stores.dart';
+export 'home/stores.dart';
+export 'mypage/mypage.dart';
+export 'order/order.dart';

@@ -6,7 +6,7 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: Colors.greenAccent,
       child: Center(
         child: Text('마이페이지', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
       ),
