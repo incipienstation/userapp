@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
             return Future(() => false);
           },
           child: Scaffold(
-            appBar: AppBar(title: Text('YAM'), centerTitle: true, backgroundColor: Colors.blue,),
+            appBar: AppBar(title: Text('YAM'), centerTitle: true, backgroundColor: Colors.red,),
             body: CategoryGrid(),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: 1,
@@ -27,10 +27,10 @@ class Home extends StatelessWidget {
               showUnselectedLabels: true,
               onTap: (i){
                 if (i == 0) {
-                  Get.to(MyPage());
+                  Get.to(() => MyPage());
                 }
                 if (i == 2) {
-                  Get.to(OrderPage());
+                  Get.to(() => OrderPage());
                 }
               },
               items: [
