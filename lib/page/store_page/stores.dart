@@ -14,7 +14,7 @@ class StoreListNavigation extends StatelessWidget {
     PageController pageController1 = PageController(
       initialPage: controller.currentIndex,
       keepPage: true,
-      viewportFraction: 0.25
+      viewportFraction: 0.22
     );
 
     PageController pageController2 = PageController(
@@ -42,15 +42,27 @@ class StoreListNavigation extends StatelessWidget {
                     itemBuilder: (_, index) {
                       return Container(
                         color: Colors.white,
-                        child: TextButton(
-                          onPressed: () async {
-                            pageController2.jumpToPage(index);
-                            pageController1.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
-                          },
-                          child: Text(controller.categoryList[index],
-                            style: index == controller.currentIndex ? controller.textStyleList[1]: controller.textStyleList[0],
-                            textAlign: TextAlign.center,
-                          ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 45,
+                              child: TextButton(
+                                onPressed: () async {
+                                  pageController2.jumpToPage(index);
+                                  pageController1.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+                                },
+                                child: Text(controller.categoryList[index],
+                                  style: index == controller.currentIndex ? controller.textStyleList[1]: controller.textStyleList[0],
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                color: index == controller.currentIndex ? Colors.black : Colors.white,
+                              ),
+                            )
+                          ],
                         ),
                       );
                     }
