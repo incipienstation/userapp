@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:userapp/controller/category_controller.dart';
 import 'package:userapp/controller/root_controller.dart';
 import 'store_page/stores.dart';
 import 'order_page/order.dart';
@@ -10,12 +11,11 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(RootController());
+    // final controller = Get.put(RootController());
     return GetBuilder<RootController>(
       builder: (_) {
         return WillPopScope(
           onWillPop: () {
-            controller.setHome();
             return Future(() => false);
           },
           child: Scaffold(
@@ -59,10 +59,56 @@ class Home extends StatelessWidget {
 }
 
 class CategoryGrid extends StatelessWidget {
-  const CategoryGrid({Key? key}) : super(key: key);
+  CategoryGrid({Key? key}) : super(key: key);
+
+  final controller = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return CustomScrollView(
+      slivers: [
+        SliverGrid(
+          delegate: SliverChildBuilderDelegate((_, index) =>
+            SizedBox(
+              child: Center(
+                child: SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        )
+                      )
+                    ),
+                    onPressed: () {
+                      Get.to(StoreListNavigation(), arguments: index);
+                    },
+                    child: Text(controller.categoryList[index],
+                      style: TextStyle(color: Colors.black45, fontSize: 13.5),
+                      textAlign: TextAlign.center,
+                    )
+                  ),
+                ),
+              )
+            ),
+            childCount: controller.categoryList.length,
+          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            ),
+          ),
+            SliverToBoxAdapter(
+              child: Container(
+                margin: EdgeInsets.only(top: 30),
+                height: 200,
+                color: Colors.orange,
+                child: Center(child: Text('준비중입니다.')),
+              ),
+            )
+          ],
+    );
   }
 }

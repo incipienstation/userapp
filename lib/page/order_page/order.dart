@@ -5,9 +5,11 @@ class OrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepPurpleAccent,
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xff555555),
+      ),
+      body: Center(
         child: Text('주문내역', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
       ),
     );

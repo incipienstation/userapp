@@ -5,9 +5,11 @@ class MyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.greenAccent,
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xff555555),
+      ),
+      body: Center(
         child: Text('마이페이지', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
       ),
     );
