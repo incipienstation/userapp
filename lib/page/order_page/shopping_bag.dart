@@ -7,7 +7,7 @@ class ShoppingBagPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('장바구니'),),
+      appBar: AppBar(title: Text('장바구니'), backgroundColor: Colors.white,),
     );
   }
 }
