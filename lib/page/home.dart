@@ -4,7 +4,7 @@ import 'package:userapp/controller/category_controller.dart';
 import 'package:userapp/controller/root_controller.dart';
 import 'package:userapp/widget/bottom_navigation_bar.dart';
 import 'package:userapp/widget/button_shopping_bag.dart';
-import './all.dart';
+import './all_pages.dart';
 
 
 class Home extends StatelessWidget {

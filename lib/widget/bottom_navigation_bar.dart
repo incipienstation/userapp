@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../page/all.dart';
+import '../page/all_pages.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   CustomBottomNavigationBar({Key? key, required this.currentIndex}) : super(key: key);
@@ -47,10 +47,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.menu_book_outlined),
           label: "홈",
-          activeIcon: Icon(Icons.menu_book),
+          activeIcon: Icon(Icons.menu_book_rounded),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_outlined),
+          icon: Icon(Icons.favorite_border),
           label: "찜",
           activeIcon: Icon(Icons.favorite),
         ),

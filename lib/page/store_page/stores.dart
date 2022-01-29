@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:userapp/controller/category_controller.dart';
-import 'package:userapp/page/all.dart';
+import 'package:userapp/page/all_pages.dart';
 import 'package:userapp/widget/button_shopping_bag.dart';
 
 class StoreListNavigation extends StatelessWidget {

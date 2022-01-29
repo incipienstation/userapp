@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:userapp/controller/root_controller.dart';
 
-import './page/all.dart';
+import './page/all_pages.dart';
 
 import './utils/theme.dart' as style;
 
