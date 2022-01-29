@@ -21,7 +21,7 @@ class Home extends StatelessWidget {
           },
           child: Scaffold(
             floatingActionButton: ShoppingBagButton(),
-            appBar: AppBar(title: Text('YAM')),
+            appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),)),
             body: CategoryGrid(),
             bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2,),
           ),
