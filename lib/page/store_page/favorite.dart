@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:userapp/widget/bottom_navigation_bar.dart';
 import 'package:get/get.dart';
+import 'package:userapp/widget/button_shopping_bag.dart';
 import '../home.dart';
 
-class MyPage extends StatelessWidget {
-  const MyPage({Key? key}) : super(key: key);
+class FavoritePage extends StatelessWidget {
+  const FavoritePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +15,14 @@ class MyPage extends StatelessWidget {
         return Future(() => false);
       },
       child: Scaffold(
+        floatingActionButton: ShoppingBagButton(),
         appBar: AppBar(
           backgroundColor: Color(0xff555555),
         ),
         body: Center(
-          child: Text('마이페이지', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
+          child: Text('찜', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 1,),
+        bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 3,),
       ),
     );
   }
