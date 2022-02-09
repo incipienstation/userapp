@@ -2,7 +2,7 @@ export 'home.dart';
 export 'order_page/order.dart';
 export 'order_page/order_completed.dart';
 export 'order_page/order_completed.dart';
-export 'order_page/shopping_bag.dart';
+export 'order_page/shopping_basket.dart';
 export 'store_page/favorite.dart';
 export 'store_page/store.dart';
 export 'store_page/stores.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:userapp/controller/category_controller.dart';
 import 'package:userapp/page/all_pages.dart';
-import 'package:userapp/widget/button_shopping_bag.dart';
+import 'package:userapp/widget/button_shopping_basket.dart';
 
 class StoreListNavigation extends StatelessWidget {
   StoreListNavigation({Key? key}) : super(key: key);
@@ -29,7 +29,7 @@ class StoreListNavigation extends StatelessWidget {
     return GetBuilder<CategoryController>(
       builder: (_) {
         return Scaffold(
-          floatingActionButton: ShoppingBagButton(),
+          floatingActionButton: ShoppingBasketButton(),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(130),
             child: AppBar(

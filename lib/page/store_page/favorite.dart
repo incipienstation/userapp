@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:userapp/widget/bottom_navigation_bar.dart';
 import 'package:get/get.dart';
-import 'package:userapp/widget/button_shopping_bag.dart';
+import 'package:userapp/widget/button_shopping_basket.dart';
 import '../home.dart';
 
 class FavoritePage extends StatelessWidget {
@@ -15,7 +15,7 @@ class FavoritePage extends StatelessWidget {
         return Future(() => false);
       },
       child: Scaffold(
-        floatingActionButton: ShoppingBagButton(),
+        floatingActionButton: ShoppingBasketButton(),
         appBar: AppBar(
           backgroundColor: Color(0xff555555),
         ),

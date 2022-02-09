@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:userapp/controller/category_controller.dart';
 import 'package:userapp/controller/root_controller.dart';
 import 'package:userapp/widget/bottom_navigation_bar.dart';
-import 'package:userapp/widget/button_shopping_bag.dart';
+import 'package:userapp/widget/button_shopping_basket.dart';
 import './all_pages.dart';
 
 
@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
             return Future(() => false);
           },
           child: Scaffold(
-            floatingActionButton: ShoppingBagButton(),
+            floatingActionButton: ShoppingBasketButton(),
             appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),), automaticallyImplyLeading: false,),
             body: CategoryGrid(),
             bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2,),
