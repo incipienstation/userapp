@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:userapp/controller/category_controller.dart';
 import 'package:userapp/controller/root_controller.dart';
 import 'package:userapp/widget/bottom_navigation_bar.dart';
@@ -12,6 +14,27 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return SignInScreen(
+            providerConfigs: [
+              EmailProviderConfiguration()
+            ],
+          );
+        }
+        return MainPage();
+      },
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     // final controller = Get.put(RootController());
     return GetBuilder<RootController>(
       builder: (_) {
@@ -21,7 +44,16 @@ class Home extends StatelessWidget {
           },
           child: Scaffold(
             floatingActionButton: ShoppingBasketButton(),
-            appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),), automaticallyImplyLeading: false,),
+            appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),), automaticallyImplyLeading: false,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.logout),
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                ),
+              ],
+            ),
             body: CategoryGrid(),
             bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2,),
           ),
@@ -72,16 +104,18 @@ class CategoryGrid extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             ),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            margin: EdgeInsets.only(top: 30),
+            height: 350,
+            color: Colors.orange,
+            child: Center(
+              child: Text('준비중입니다'),
+            ),
           ),
-            SliverToBoxAdapter(
-              child: Container(
-                margin: EdgeInsets.only(top: 30),
-                height: 350,
-                color: Colors.orange,
-                child: Center(child: Text('준비중입니다.')),
-              ),
-            )
-          ],
+        )
+      ],
     );
   }
 }

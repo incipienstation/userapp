@@ -23,7 +23,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           Get.off(() => MyPage(), transition: Transition.fadeIn);
           break;
         case 2:
-          Get.off(() => Home(), transition: Transition.fadeIn);
+          Get.off(() => MainPage(), transition: Transition.fadeIn);
           break;
         case 3:
           Get.off(() => FavoritePage(), transition: Transition.fadeIn);

@@ -11,7 +11,7 @@ class FavoritePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Get.to(() => Home(), transition: Transition.noTransition);
+        Get.to(() => MainPage(), transition: Transition.noTransition);
         return Future(() => false);
       },
       child: Scaffold(
