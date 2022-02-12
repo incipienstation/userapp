@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../page/all_pages.dart';
+import 'package:userapp/page/home.dart';
+import 'package:userapp/page/order/order_page.dart';
+import 'package:userapp/page/store/favorite_page.dart';
+import 'package:userapp/page/user/user_page.dart';
+import 'package:userapp/page/user/question_page.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   CustomBottomNavigationBar({Key? key, required this.currentIndex}) : super(key: key);
@@ -23,7 +27,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           Get.off(() => MyPage(), transition: Transition.fadeIn);
           break;
         case 2:
-          Get.off(() => MainPage(), transition: Transition.fadeIn);
+          Get.off(() => Home(), transition: Transition.fadeIn);
           break;
         case 3:
           Get.off(() => FavoritePage(), transition: Transition.fadeIn);

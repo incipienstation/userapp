@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutterfire_ui/auth.dart';
 import 'package:userapp/controller/category_controller.dart';
 import 'package:userapp/controller/root_controller.dart';
+import 'package:userapp/page/store/store_navigation_page.dart';
 import 'package:userapp/widget/bottom_navigation_bar.dart';
-import 'package:userapp/widget/button_shopping_basket.dart';
-import './all_pages.dart';
+import 'package:userapp/widget/shopping_basket_button.dart';
+import 'auth/login_page.dart';
 
 
 class Home extends StatelessWidget {
@@ -14,28 +14,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return SignInScreen(
-            providerConfigs: [
-              EmailProviderConfiguration()
-            ],
-          );
-        }
-        return MainPage();
-      },
-    );
-  }
-}
-
-class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // final controller = Get.put(RootController());
     return GetBuilder<RootController>(
       builder: (_) {
         return WillPopScope(
@@ -50,6 +28,7 @@ class MainPage extends StatelessWidget {
                   icon: Icon(Icons.logout),
                   onPressed: () {
                     FirebaseAuth.instance.signOut();
+                    Get.offAll(() => LoginPage(), transition: Transition.fade, duration: Duration(milliseconds: 1000));
                   },
                 ),
               ],
@@ -72,38 +51,41 @@ class CategoryGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverGrid(
-          delegate: SliverChildBuilderDelegate((_, index) =>
-            SizedBox(
-              child: Center(
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
+        SliverPadding(
+          padding: EdgeInsets.all(15),
+          sliver: SliverGrid(
+            delegate: SliverChildBuilderDelegate((_, index) =>
+              SizedBox(
+                child: Center(
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(42),
+                          )
                         )
+                      ),
+                      onPressed: () {
+                        Get.to(StoreListNavigation(), arguments: index);
+                      },
+                      child: Text(controller.categoryList[index],
+                        style: TextStyle(color: Colors.black45, fontSize: 13.5),
+                        textAlign: TextAlign.center,
                       )
                     ),
-                    onPressed: () {
-                      Get.to(StoreListNavigation(), arguments: index);
-                    },
-                    child: Text(controller.categoryList[index],
-                      style: TextStyle(color: Colors.black45, fontSize: 13.5),
-                      textAlign: TextAlign.center,
-                    )
                   ),
-                ),
-              )
+                )
+              ),
+              childCount: controller.categoryList.length,
             ),
-            childCount: controller.categoryList.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              ),
           ),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            ),
         ),
         SliverToBoxAdapter(
           child: Container(

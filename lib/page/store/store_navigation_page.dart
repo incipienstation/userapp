@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:userapp/controller/category_controller.dart';
-import 'package:userapp/page/all_pages.dart';
-import 'package:userapp/widget/button_shopping_basket.dart';
+import 'package:userapp/page/store/store_page.dart';
+import 'package:userapp/widget/shopping_basket_button.dart';
 
 class StoreListNavigation extends StatelessWidget {
   StoreListNavigation({Key? key}) : super(key: key);

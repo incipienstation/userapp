@@ -3,14 +3,14 @@ import 'package:userapp/widget/bottom_navigation_bar.dart';
 import 'package:get/get.dart';
 import '../home.dart';
 
-class OrderPage extends StatelessWidget {
-  const OrderPage({Key? key}) : super(key: key);
+class QuestionPage extends StatelessWidget {
+  const QuestionPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Get.to(() => MainPage(), transition: Transition.noTransition);
+        Get.to(() => Home(), transition: Transition.noTransition);
         return Future(() => false);
       },
       child: Scaffold(
@@ -18,9 +18,9 @@ class OrderPage extends StatelessWidget {
           backgroundColor: Color(0xff555555),
         ),
         body: Center(
-          child: Text('주문내역', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
+          child: Text('문의사항', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 4,),
+        bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 0,),
       ),
     );
   }

@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 
 import 'package:userapp/controller/root_controller.dart';
 
-import './page/all_pages.dart';
+import 'package:userapp/page/auth/join_page.dart';
+import 'page/home.dart';
 
 import './utils/theme.dart' as style;
 
@@ -19,7 +20,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       theme: style.theme,
-      home: Home(),
+      home: JoinPage(),
       initialBinding: BindingsBuilder((){
         Get.put(RootController());
       }),
