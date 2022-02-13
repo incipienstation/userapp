@@ -8,12 +8,22 @@ var theme = ThemeData(
   ),
   textTheme: TextTheme(
     bodyText2: TextStyle(
-      fontSize: 25,
+      fontSize: 15,
       fontWeight: FontWeight.bold
     )
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     selectedItemColor: Colors.redAccent,
     unselectedItemColor: Colors.grey,
-  )
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      primary: Colors.redAccent,
+    )
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.redAccent,
+      )
+  ),
 );

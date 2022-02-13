@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:userapp/widget/bottom_navigation_bar.dart';
+import 'package:userapp/widgets/bottom_navigation_bar.dart';
 import 'package:get/get.dart';
+import 'package:userapp/widgets/shopping_basket_button.dart';
 import '../home.dart';
 
-class QuestionPage extends StatelessWidget {
-  const QuestionPage({Key? key}) : super(key: key);
+class FavoritePage extends StatelessWidget {
+  const FavoritePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +15,14 @@ class QuestionPage extends StatelessWidget {
         return Future(() => false);
       },
       child: Scaffold(
+        floatingActionButton: ShoppingBasketButton(),
         appBar: AppBar(
           backgroundColor: Color(0xff555555),
         ),
         body: Center(
-          child: Text('문의사항', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
+          child: Text('찜', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 0,),
+        bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 3,),
       ),
     );
   }

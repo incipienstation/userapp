@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:userapp/controller/authentication_controller.dart';
+import 'package:userapp/controllers/authentication_controller.dart';
 
 // typedef Validator = String? Function(String? value);
 

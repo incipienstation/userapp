@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:userapp/page/order/shopping_basket.dart';
+import 'package:userapp/pages/order/shopping_basket.dart';
 import 'package:get/get.dart';
 
 class ShoppingBasketButton extends StatelessWidget {

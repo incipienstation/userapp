@@ -3,12 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
 
-import 'package:userapp/controller/root_controller.dart';
-
-import 'package:userapp/page/auth/join_page.dart';
-import 'page/home.dart';
-
 import './utils/theme.dart' as style;
+
+import 'package:userapp/controllers/root_controller.dart';
+import 'pages/home.dart';
 
 
 void main() async {
@@ -20,7 +18,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       theme: style.theme,
-      home: JoinPage(),
+      home: Home(),
       initialBinding: BindingsBuilder((){
         Get.put(RootController());
       }),

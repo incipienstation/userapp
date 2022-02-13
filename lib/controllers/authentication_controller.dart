@@ -23,6 +23,7 @@ class AuthenticationController extends GetxController {
   bool duplicatedEmailErrorOccurred = false;
   bool userNotFoundErrorOccurred = false;
   bool wrongPasswordErrorOccurred = false;
+  bool tooManyRequestsErrorOccurred = false;
 
   setErrorWithType(bool isErrorOccurred, int type) {
     switch (type) {
@@ -34,6 +35,9 @@ class AuthenticationController extends GetxController {
         break;
       case 2:
         wrongPasswordErrorOccurred = isErrorOccurred;
+        break;
+      case 3:
+        tooManyRequestsErrorOccurred = isErrorOccurred;
         break;
       default:
         if (isErrorOccurred) {

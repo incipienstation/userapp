@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:userapp/page/home.dart';
-import 'package:userapp/page/order/order_page.dart';
-import 'package:userapp/page/store/favorite_page.dart';
-import 'package:userapp/page/user/user_page.dart';
-import 'package:userapp/page/user/question_page.dart';
+import 'package:userapp/pages/home.dart';
+import 'package:userapp/pages/order/order_page.dart';
+import 'package:userapp/pages/store/favorite_page.dart';
+import 'package:userapp/pages/user/user_page.dart';
+import 'package:userapp/pages/user/question_page.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   CustomBottomNavigationBar({Key? key, required this.currentIndex}) : super(key: key);

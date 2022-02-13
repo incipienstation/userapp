@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:userapp/widget/shopping_basket_button.dart';
+import 'package:userapp/widgets/shopping_basket_button.dart';
 
 class StorePage extends StatelessWidget {
   const StorePage({Key? key}) : super(key: key);

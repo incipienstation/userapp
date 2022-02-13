@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:userapp/controller/authentication_controller.dart';
-import 'package:userapp/page/home.dart';
-import 'package:userapp/widget/custom_elevated_button.dart';
-import 'package:userapp/widget/custom_text_form_field.dart';
+import 'package:userapp/controllers/authentication_controller.dart';
+import 'package:userapp/pages/auth/join_page.dart';
+import 'package:userapp/pages/home.dart';
+import 'package:userapp/widgets/custom_elevated_button.dart';
+import 'package:userapp/widgets/custom_text_form_field.dart';
 
 
 final auth = FirebaseAuth.instance;
@@ -13,6 +14,7 @@ class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+  final controller = Get.put(AuthenticationController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,32 @@ class LoginPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('혹시 처음이신가요?', style: TextStyle(fontWeight: FontWeight.normal),),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.black,
+                        textStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      onPressed: () {
+                        controller.onClose();
+                        Get.to(() => JoinPage());
+                      },
+                      child: Text('회원가입', style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5
+                      ),)
+                    ),
+                  ],
+                ),
+              ),
               _loginForm(),
             ],
           ),
@@ -38,7 +66,6 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _loginForm() {
-    final controller = Get.put(AuthenticationController());
     return GetBuilder<AuthenticationController>(
       builder: (_) {
         return Form(
@@ -69,6 +96,10 @@ class LoginPage extends StatelessWidget {
                   validator: (String? value){
                     if (controller.userNotFoundErrorOccurred || controller.wrongPasswordErrorOccurred) {
                       return '이메일 혹은 비밀번호가 일치하지 않습니다.';
+                    } else if (controller.tooManyRequestsErrorOccurred) {
+                      return '로그인 시도가 너무 많습니다. 나중에 다시 시도하세요.';
+                    } else if (value!.isEmpty) {
+                      return '공백이 들어갈 수 없습니다.';
                     } else {
                       return null;
                     }
@@ -83,6 +114,7 @@ class LoginPage extends StatelessWidget {
                           email: controller.email,
                           password: controller.password,
                         );
+                        controller.onClose();
                         Get.off(() => Home());
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
@@ -93,6 +125,10 @@ class LoginPage extends StatelessWidget {
                           controller.setErrorWithType(true, 2);
                           _formKey.currentState!.validate();
                           controller.setErrorWithType(false, 2);
+                        } else if (e.code == 'too-many-requests') {
+                          controller.setErrorWithType(true, 3);
+                          _formKey.currentState!.validate();
+                          controller.setErrorWithType(false, 3);
                         }
                       }
                     }
