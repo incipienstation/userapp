@@ -5,7 +5,7 @@ var theme = ThemeData(
     titleTextStyle: TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 20,
-      color: Colors.white70,
+      color: Colors.white,
       letterSpacing: 1.3,
     ),
     centerTitle: true,

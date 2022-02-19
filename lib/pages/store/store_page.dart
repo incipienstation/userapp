@@ -12,10 +12,10 @@ class StorePage extends StatelessWidget {
   StorePage({Key? key}) : super(key: key);
   final Store store = Get.arguments;
 
+  final storeController = Get.put(StoreController());
+
   @override
   Widget build(BuildContext context) {
-    final storeController = Get.put(StoreController());
-
     return Scaffold(
       floatingActionButton: ShoppingBasketButton(),
       body: Center(
@@ -39,10 +39,19 @@ class StorePage extends StatelessWidget {
               );
               return Container();
             } else {
-              return SizedBox(
-                width: 45,
-                height: 45,
-                child: CircularProgressIndicator(),
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(store.name, style: TextStyle(color: Colors.black),),
+                  backgroundColor: Colors.white,
+                  leading: CustomBackButton(color: Colors.black,),
+                ),
+                body: Center(
+                  child: SizedBox(
+                    width: 45,
+                    height: 45,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
               );
             }
           },
@@ -53,7 +62,7 @@ class StorePage extends StatelessWidget {
 }
 
 class MenuListView extends StatelessWidget {
-  const MenuListView({
+  MenuListView({
     Key? key,
     required this.menuList,
     required this.store,
@@ -62,65 +71,124 @@ class MenuListView extends StatelessWidget {
   final List<Menu> menuList;
   final Store store;
 
+  final controller = Get.find<StoreController>();
+
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          leading: CustomBackButton(color: Colors.black,),
-          expandedHeight: 120,
-          elevation: 0,
-          pinned: true,
-          floating: false,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text(store.name, style: TextStyle(color: Colors.black),),
-            centerTitle: true,
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (c, i) {
-              return Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(width: 2, color: Color(0xffdddddd)))
+    return GetBuilder<StoreController>(
+      builder: (_) {
+        return CustomScrollView(
+          controller: _.scrollController,
+          slivers: [
+            SliverAppBar(
+              title: _.onTriggerOffset
+                  ? Text(
+                      store.name,
+                      style: TextStyle(color: Colors.black,),
+                    )
+                  : null,
+              centerTitle: true,
+              leading: CustomBackButton(color: _.onTriggerOffset ? Colors.black : Colors.white,),
+              actions: [
+                SizedBox(
+                  child: _.onTriggerOffset ? FavoriteButton() : null,
                 ),
+              ],
+              backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
+              expandedHeight: _.triggerOffset,
+              pinned: true,
+              elevation: 0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(color: Colors.redAccent, child: Center(child: Text('대표사진 준비중')),),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        menuList[i].name,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: Text(
+                              store.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 25,
+                                letterSpacing: 1.3
+                              ),
+                            ),
+                          ),
+                          FavoriteButton(),
+                        ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        '${Utility.intToStringWithFormat(menuList[i].price)}원',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    )
+                    Container(
+                      padding: EdgeInsets.all(10),
+                    ),
                   ],
                 ),
-              );
-            },
-            childCount: menuList.length,
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            height: 1000,
-          ),
-        ),
-      ],
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (c, i) {
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(width: 2, color: Color(0xffdddddd)))
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Text(
+                            menuList[i].name,
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Text(
+                            '${Utility.intToStringWithFormat(menuList[i].price)}원',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+                childCount: menuList.length,
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 1000,
+              ),
+            ),
+          ],
+        );
+      },
     );
+  }
+}
+
+class FavoriteButton extends StatelessWidget {
+  const FavoriteButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border, color: Colors.black,));
   }
 }

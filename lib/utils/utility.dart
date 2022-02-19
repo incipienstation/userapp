@@ -6,7 +6,7 @@ class Utility {
 
     for (int i = 0; i < str.length; i++) {
       newStr += str[str.length - i - 1];
-      if (cnt % 3 == 0) {
+      if (cnt % 3 == 0 && i != str.length - 1) {
         newStr += ',';
       }
       cnt++;
