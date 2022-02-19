@@ -11,18 +11,17 @@ final auth = FirebaseAuth.instance;
 class MyPage extends StatelessWidget {
   MyPage({Key? key}) : super(key: key);
 
-  final controller = Get.put(
-      UserPageController(isLoggedIn: auth.currentUser != null ? true : false));
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Get.to(() => Home(), transition: Transition.noTransition);
+        Get.off(() => Home(), transition: Transition.noTransition);
         return Future(() => false);
       },
       child: GetBuilder<UserPageController>(
-        builder: (_) {
+        init: UserPageController(isLoggedIn: auth.currentUser?.uid != null ? true : false),
+        builder: (controller) {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Color(0xff555555),
@@ -57,11 +56,7 @@ class MyPage extends StatelessWidget {
                         ],
                       );
                     } else {
-                      Get.offAll(
-                        () => LoginPage(),
-                        transition: Transition.fade,
-                        duration: Duration(milliseconds: 1000),
-                      );
+                      Get.to(() => LoginPage());
                     }
                   },
                 ),

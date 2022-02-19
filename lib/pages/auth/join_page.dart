@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:userapp/widgets/custom_text_form_field.dart';
 
 
 final auth = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
 
 class JoinPage extends StatelessWidget {
   JoinPage({Key? key}) : super(key: key);
@@ -99,7 +101,8 @@ class JoinPage extends StatelessWidget {
                               password: controller.password
                           );
                           controller.onClose();
-                          Get.off(() => Home());
+                          _addUserDoc();
+                          Get.offAll(() => Home());
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'email-already-in-use') {
                             controller.setErrorWithType(true, 0);
@@ -117,5 +120,9 @@ class JoinPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _addUserDoc() {
+    firestore.collection('user').add({'uid': auth.currentUser?.uid});
   }
 }

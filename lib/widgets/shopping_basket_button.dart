@@ -9,8 +9,13 @@ class ShoppingBasketButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: Colors.redAccent,
-      onPressed: (){
-        Get.to(() => ShoppingBasketPage());
+      onPressed: () {
+        Get.to(
+          () => ShoppingBasketPage(),
+          transition: Transition.downToUp,
+          duration: Duration(milliseconds: 600),
+          fullscreenDialog: true,
+        );
       },
       child: Icon(Icons.shopping_basket),
     );

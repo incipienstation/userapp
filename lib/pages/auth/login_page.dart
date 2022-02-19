@@ -115,7 +115,7 @@ class LoginPage extends StatelessWidget {
                           password: controller.password,
                         );
                         controller.onClose();
-                        Get.off(() => Home());
+                        Get.offAll(() => Home());
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           controller.setErrorWithType(true, 1);

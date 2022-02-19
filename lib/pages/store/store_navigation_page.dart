@@ -1,17 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:userapp/controllers/category_controller.dart';
-import 'package:userapp/pages/store/store_page.dart';
+import 'package:userapp/controllers/root_controller.dart';
+import 'package:userapp/widgets/custom_back_button.dart';
+import 'package:userapp/widgets/custom_list_tile.dart';
 import 'package:userapp/widgets/shopping_basket_button.dart';
 
 class StoreListNavigation extends StatelessWidget {
   StoreListNavigation({Key? key}) : super(key: key);
 
   final categoryController = Get.find<CategoryController>();
+  final rootController = Get.find<RootController>();
+  final int index = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
-    categoryController.setCurrentIndex(Get.arguments);
+    categoryController.setCurrentIndex(index);
 
     PageController tabBarController = PageController(
       initialPage: categoryController.currentIndex,
@@ -34,6 +39,7 @@ class StoreListNavigation extends StatelessWidget {
             preferredSize: Size.fromHeight(130),
             child: AppBar(
               title: Text(categoryController.categoryList[categoryController.currentIndex]),
+              leading: CustomBackButton(),
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(50),
                 child: Container(
@@ -85,48 +91,13 @@ class StoreListNavigation extends StatelessWidget {
               await tabBarController.animateToPage(index, duration: Duration(seconds: 1), curve: Curves.ease);
             },
             itemBuilder: (_, i) {
+              List<QueryDocumentSnapshot<Map<String, dynamic>>> storesWithinCategory = rootController.stores.where((element) => element['category'] == categoryController.categoryList[i] ? true : false).toList();
               return ListView.builder(
                 key: PageStorageKey<int>(i),
                 controller: listViewController,
-                itemCount: 15,
+                itemCount: storesWithinCategory.length,
                 itemBuilder: (_, j) {
-                  return GestureDetector(
-                    onDoubleTap: () {
-
-                    },
-                    onTap: (){
-                      Get.to(() => StorePage(), arguments: '${categoryController.categoryList[i]} ${j + 1}', transition: Transition.rightToLeftWithFade);
-                    },
-                    child: Container(
-                      key: PageStorageKey<String>('$i/$j'),
-                      height: 120,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(bottom: BorderSide(width: 2, color: Color(0xffdddddd)))
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Container(color: Colors.greenAccent,
-                              child: Center(
-                                child: Text('${categoryController.categoryList[i]} ${j + 1}',
-                                  style: TextStyle(
-                                    fontSize: 13
-                                  ),
-                                )
-                              ),
-                            ),
-                            flex: 3,
-                          ),
-                          Flexible(
-                            child: Container(color: Colors.cyan,),
-                            flex: 7,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return CustomListTile(listViewIndex: j, storesWithinCategory: storesWithinCategory,);
                 }
               );
             },

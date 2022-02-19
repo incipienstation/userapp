@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 
 var theme = ThemeData(
   appBarTheme: AppBarTheme(
-    titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white70),
+    titleTextStyle: TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 20,
+      color: Colors.white70,
+      letterSpacing: 1.3,
+    ),
     centerTitle: true,
-    backgroundColor: Colors.redAccent
+    backgroundColor: Colors.redAccent,
   ),
   textTheme: TextTheme(
     bodyText2: TextStyle(
       fontSize: 15,
-      fontWeight: FontWeight.bold
-    )
+      fontWeight: FontWeight.bold,
+    ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     selectedItemColor: Colors.redAccent,
@@ -19,11 +24,11 @@ var theme = ThemeData(
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       primary: Colors.redAccent,
-    )
+    ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        primary: Colors.redAccent,
-      )
+    style: ElevatedButton.styleFrom(
+      primary: Colors.redAccent,
+    ),
   ),
 );

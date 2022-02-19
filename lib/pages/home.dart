@@ -33,7 +33,7 @@ class Home extends StatelessWidget {
 class CategoryGrid extends StatelessWidget {
   CategoryGrid({Key? key}) : super(key: key);
 
-  final controller = Get.put(CategoryController());
+  final categoryController = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +58,9 @@ class CategoryGrid extends StatelessWidget {
                         )
                       ),
                       onPressed: () {
-                        Get.to(StoreListNavigation(), arguments: index);
+                        Get.to(() => StoreListNavigation(), arguments: index);
                       },
-                      child: Text(controller.categoryList[index],
+                      child: Text(categoryController.categoryList[index],
                         style: TextStyle(color: Colors.black45, fontSize: 13.5),
                         textAlign: TextAlign.center,
                       )
@@ -68,7 +68,7 @@ class CategoryGrid extends StatelessWidget {
                   ),
                 )
               ),
-              childCount: controller.categoryList.length,
+              childCount: categoryController.categoryList.length,
             ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
@@ -77,12 +77,15 @@ class CategoryGrid extends StatelessWidget {
         ),
         SliverToBoxAdapter(
           child: Container(
-            margin: EdgeInsets.only(top: 30),
+            margin: EdgeInsets.all(20),
             height: 350,
             color: Colors.orange,
-            child: Center(
-              child: Text('준비중입니다'),
-            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('준비중입니다')
+              ],
+            )
           ),
         )
       ],

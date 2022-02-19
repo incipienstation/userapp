@@ -10,7 +10,7 @@ class OrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Get.to(() => Home(), transition: Transition.noTransition);
+        Get.off(() => Home(), transition: Transition.noTransition);
         return Future(() => false);
       },
       child: Scaffold(
