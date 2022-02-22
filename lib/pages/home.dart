@@ -18,11 +18,13 @@ class Home extends StatelessWidget {
           onWillPop: () {
             return Future(() => false);
           },
-          child: Scaffold(
-            floatingActionButton: ShoppingBasketButton(),
-            appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),), automaticallyImplyLeading: false,),
-            body: CategoryGrid(),
-            bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2,),
+          child: SafeArea(
+            child: Scaffold(
+              floatingActionButton: ShoppingBasketButton(),
+              appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),), automaticallyImplyLeading: false,),
+              body: CategoryGrid(),
+              bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2,),
+            ),
           ),
         );
       }

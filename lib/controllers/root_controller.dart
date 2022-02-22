@@ -21,4 +21,25 @@ class RootController extends GetxController {
     super.onInit();
     fetchStores();
   }
+
+
+  bool isPushed = false;
+
+  setIsPushed() {
+    isPushed = !isPushed;
+    update();
+  }
+
+  bool isActive = false;
+
+  setIsActive() {
+    isActive = !isActive;
+  }
+
+  bool visible = false;
+
+  setVisible() {
+    visible = !visible;
+    update();
+  }
 }

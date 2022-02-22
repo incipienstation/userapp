@@ -33,75 +33,77 @@ class StoreListNavigation extends StatelessWidget {
 
     return GetBuilder<CategoryController>(
       builder: (_) {
-        return Scaffold(
-          floatingActionButton: ShoppingBasketButton(),
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(130),
-            child: AppBar(
-              title: Text(categoryController.categoryList[categoryController.currentIndex]),
-              leading: CustomBackButton(),
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(50),
-                child: Container(
-                  height: 50,
-                  color: Colors.white,
-                  child: PageView.builder(
-                    controller: tabBarController,
-                    pageSnapping: false,
-                    itemCount: categoryController.categoryList.length,
-                    itemBuilder: (_, index) {
-                      return GestureDetector(
-                        onTap: () async {
-                          pageViewController.jumpToPage(index);
-                          await tabBarController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 45,
-                                child: Center(
-                                  child: Text(categoryController.categoryList[index],
-                                    style: index == categoryController.currentIndex ? categoryController.textStyleList[1]: categoryController.textStyleList[0],
-                                    textAlign: TextAlign.center,
+        return SafeArea(
+          child: Scaffold(
+            floatingActionButton: ShoppingBasketButton(),
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(120),
+              child: AppBar(
+                title: Text(categoryController.categoryList[categoryController.currentIndex]),
+                leading: CustomBackButton(),
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(50),
+                  child: Container(
+                    height: 50,
+                    color: Colors.white,
+                    child: PageView.builder(
+                      controller: tabBarController,
+                      pageSnapping: false,
+                      itemCount: categoryController.categoryList.length,
+                      itemBuilder: (_, index) {
+                        return GestureDetector(
+                          onTap: () async {
+                            pageViewController.jumpToPage(index);
+                            await tabBarController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 45,
+                                  child: Center(
+                                    child: Text(categoryController.categoryList[index],
+                                      style: index == categoryController.currentIndex ? categoryController.textStyleList[1]: categoryController.textStyleList[0],
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  color: index == categoryController.currentIndex ? Colors.black : Colors.white,
-                                ),
-                              )
-                            ],
+                                Expanded(
+                                  child: Container(
+                                    color: index == categoryController.currentIndex ? Colors.black : Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }
+                        );
+                      }
+                    ),
                   ),
                 ),
-              ),
-            )
-          ),
-          body: PageView.builder(
-            controller: pageViewController,
-            allowImplicitScrolling: true,
-            onPageChanged: (index) async {
-              await categoryController.setCurrentIndex(index);
-              await tabBarController.animateToPage(index, duration: Duration(seconds: 1), curve: Curves.ease);
-            },
-            itemBuilder: (_, i) {
-              List<QueryDocumentSnapshot<Map<String, dynamic>>> storesWithinCategory = rootController.stores.where((element) => element['category'] == categoryController.categoryList[i] ? true : false).toList();
-              return ListView.builder(
-                key: PageStorageKey<int>(i),
-                controller: listViewController,
-                itemCount: storesWithinCategory.length,
-                itemBuilder: (_, j) {
-                  return CustomListTile(listViewIndex: j, storesWithinCategory: storesWithinCategory,);
-                }
-              );
-            },
-            itemCount: categoryController.categoryList.length,
+              )
+            ),
+            body: PageView.builder(
+              controller: pageViewController,
+              allowImplicitScrolling: true,
+              onPageChanged: (index) async {
+                await categoryController.setCurrentIndex(index);
+                await tabBarController.animateToPage(index, duration: Duration(seconds: 1), curve: Curves.ease);
+              },
+              itemBuilder: (_, i) {
+                List<QueryDocumentSnapshot<Map<String, dynamic>>> storesWithinCategory = rootController.stores.where((element) => element['category'] == categoryController.categoryList[i] ? true : false).toList();
+                return ListView.builder(
+                  key: PageStorageKey<int>(i),
+                  controller: listViewController,
+                  itemCount: storesWithinCategory.length,
+                  itemBuilder: (_, j) {
+                    return CustomListTile(listViewIndex: j, storesWithinCategory: storesWithinCategory,);
+                  }
+                );
+              },
+              itemCount: categoryController.categoryList.length,
+            ),
           ),
         );
       }

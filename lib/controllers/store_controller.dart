@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:userapp/models/store.dart';
 
 class StoreController extends GetxController {
-  double offset = 0;
   bool onTriggerOffset = false;
   final scrollController = ScrollController();
   final double triggerOffset = 300;
@@ -12,11 +11,6 @@ class StoreController extends GetxController {
   _setonTriggerOffset(bool onTriggerOffset) {
     this.onTriggerOffset = onTriggerOffset;
     update();
-  }
-
-  setOffset(double offset) {
-    this.offset = offset;
-    // update();
   }
 
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>?> fetchMenus(Store store) async {

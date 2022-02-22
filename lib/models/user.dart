@@ -4,10 +4,5 @@ class User {
 
   User({required this.uid, this.favoriteStoreIds});
 
-  asStringMap() {
-    return {
-      'uid': uid,
-      'favoriteStores': favoriteStoreIds,
-    };
-  }
+
 }
