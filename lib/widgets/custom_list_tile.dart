@@ -9,31 +9,32 @@ import 'package:userapp/pages/store/store_page.dart';
 import 'package:userapp/utils/utility.dart';
 
 final auth = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
 
 class CustomListTile extends StatelessWidget {
   final int listViewIndex;
-  final List<QueryDocumentSnapshot<Map<String, dynamic>>> storesWithinCategory;
+  final List<QueryDocumentSnapshot<Map<String, dynamic>>> stores;
 
   CustomListTile({
-    Key? key, required this.listViewIndex, required this.storesWithinCategory,
+    Key? key, required this.listViewIndex, required this.stores,
   }) : super(key: key);
 
   final categoryController = Get.find<CategoryController>();
   final rootController = Get.find<RootController>();
 
-
   @override
   Widget build(BuildContext context) {
-    Store store = Store.fromDoc(storesWithinCategory[listViewIndex]);
+    Store store = Store.fromDoc(stores[listViewIndex]);
 
     return GestureDetector(
       onDoubleTap: () {
+        print(stores[listViewIndex].reference.id);
       },
       onTap: (){
         Get.to(
           () => StorePage(),
           transition: Transition.rightToLeftWithFade,
-          arguments: store,
+          arguments: stores[listViewIndex].reference.id,
           duration: Duration(milliseconds: 500),
           popGesture: false,
         );

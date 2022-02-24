@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:userapp/controllers/category_controller.dart';
-import 'package:userapp/controllers/root_controller.dart';
 import 'package:userapp/pages/store/store_navigation_page.dart';
 import 'package:userapp/widgets/bottom_navigation_bar.dart';
 import 'package:userapp/widgets/shopping_basket_button.dart';
 
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<RootController>(
-      builder: (_) {
-        return WillPopScope(
-          onWillPop: () {
-            return Future(() => false);
-          },
-          child: SafeArea(
-            child: Scaffold(
-              floatingActionButton: ShoppingBasketButton(),
-              appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),), automaticallyImplyLeading: false,),
-              body: CategoryGrid(),
-              bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2,),
-            ),
-          ),
-        );
-      }
+    return WillPopScope(
+      onWillPop: () {
+        return Future(() => false);
+      },
+      child: SafeArea(
+        child: Scaffold(
+          floatingActionButton: ShoppingBasketButton(),
+          appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),), automaticallyImplyLeading: false,),
+          body: CategoryGrid(),
+          bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2,),
+        ),
+      ),
     );
   }
 }

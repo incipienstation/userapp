@@ -101,8 +101,8 @@ class JoinPage extends StatelessWidget {
                               password: controller.password
                           );
                           controller.onClose();
-                          _addUserDoc();
                           Get.offAll(() => Home());
+                          _addUserDoc();
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'email-already-in-use') {
                             controller.setErrorWithType(true, 0);
@@ -123,6 +123,9 @@ class JoinPage extends StatelessWidget {
   }
 
   void _addUserDoc() {
-    firestore.collection('user').add({'uid': auth.currentUser?.uid});
+    firestore.collection('user').add({
+      'uid': auth.currentUser?.uid,
+      'favoriteStoreIdList': [],
+    }).then((value) => null).catchError((error) => null);
   }
 }

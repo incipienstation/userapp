@@ -1,67 +1,45 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:userapp/controllers/root_controller.dart';
 import 'package:userapp/controllers/store_controller.dart';
+import 'package:userapp/controllers/toast_controller.dart';
 import 'package:userapp/models/menu.dart';
 import 'package:userapp/models/store.dart';
+import 'package:userapp/pages/auth/login_page.dart';
 import 'package:userapp/utils/utility.dart';
 import 'package:userapp/widgets/custom_back_button.dart';
+import 'package:userapp/widgets/custom_progress_indicator.dart';
 import 'package:userapp/widgets/shopping_basket_button.dart';
+import 'package:userapp/widgets/toast_message.dart';
+
+final auth = FirebaseAuth.instance;
 
 class StorePage extends StatelessWidget {
   StorePage({Key? key}) : super(key: key);
-  final Store store = Get.arguments;
-
-  final storeController = Get.put(StoreController());
+  final String storeDocId = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    final storeController = Get.put(StoreController(storeDocId: storeDocId));
     return SafeArea(
       child: Scaffold(
         floatingActionButton: ShoppingBasketButton(),
         body: Center(
-          child:
-              FutureBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>?>(
-            future: storeController.fetchMenus(store),
-            builder: (c, s) {
-              if (s.hasData) {
-                List<Menu> menuList = [];
-                for (var doc in s.data!) {
-                  menuList.add(Menu.fromDoc(doc));
-                }
+          child: FutureBuilder(
+            future: Future.wait([
+              storeController.fetchStore(storeDocId),
+              storeController.fetchMenus(storeDocId),
+            ]),
+            builder: (c, AsyncSnapshot<List<bool>> snapshot) {
+              if (snapshot.hasData && snapshot.data![1]) {
+                print('futurebuilder 성공적');
                 return MenuListView(
-                  menuList: menuList,
-                  store: store,
+                  menuList: storeController.menuList,
+                  store: storeController.store,
                 );
-              } else if (s.hasError) {
-                Get.defaultDialog(
-                  title: '연결 오류',
-                  middleText: '서버에서 데이터를 받아오지 못함',
-                  barrierDismissible: true,
-                );
-                return Container();
               } else {
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text(
-                      store.name,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.white,
-                    leading: CustomBackButton(
-                      color: Colors.black,
-                    ),
-                  ),
-                  body: Center(
-                    child: SizedBox(
-                      width: 45,
-                      height: 45,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                );
+                print('futurebuilder 실패적');
+                return CustomProgressIndicator();
               }
             },
           ),
@@ -103,16 +81,19 @@ class MenuListView extends StatelessWidget {
               leading: CustomBackButton(
                 color: _.onTriggerOffset ? Colors.black : Colors.white,
               ),
-              actions: [
-                SizedBox(
-                  child: _.onTriggerOffset ? FavoriteButton() : null,
-                ),
-              ],
               backgroundColor: Colors.white,
               automaticallyImplyLeading: false,
               expandedHeight: _.triggerOffset,
               pinned: true,
               elevation: 0,
+              actions: _.onTriggerOffset
+                  ? [
+                      FavoriteButton(
+                        store: store,
+                        omitNumber: true,
+                      ),
+                    ]
+                  : null,
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   color: Colors.redAccent,
@@ -121,7 +102,7 @@ class MenuListView extends StatelessWidget {
               ),
             ),
             SliverToBoxAdapter(
-              child: Container(
+              child: SizedBox(
                 child: Column(
                   children: [
                     Container(
@@ -130,7 +111,7 @@ class MenuListView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(10),
                             child: Text(
                               store.name,
                               style: TextStyle(
@@ -139,7 +120,9 @@ class MenuListView extends StatelessWidget {
                                   letterSpacing: 1.3),
                             ),
                           ),
-                          FavoriteButton(),
+                          FavoriteButton(
+                            store: store,
+                          ),
                         ],
                       ),
                     ),
@@ -200,98 +183,89 @@ class MenuListView extends StatelessWidget {
 }
 
 class FavoriteButton extends StatelessWidget {
+  final Store store;
+  final bool omitNumber;
+
   FavoriteButton({
     Key? key,
+    required this.store,
+    this.omitNumber = false,
   }) : super(key: key);
 
-  final rootController = Get.find<RootController>();
+  final storeController = Get.find<StoreController>();
+  final toastController = Get.find<ToastController>();
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<RootController>(
+    return GetBuilder<StoreController>(
       builder: (_) {
-        return IconButton(
-          onPressed: () {
-            if (!_.isActive) {
-              if (!_.isPushed) {
-                _showToast(context, _.isPushed);
-                _.setIsPushed();
+        return GestureDetector(
+          onTap: () async {
+            if (!toastController.isActive) {
+              if (auth.currentUser == null) {
+                await Toast.showToast(context, message: '로그인 후 사용 가능한 기능입니다.');
+                Get.defaultDialog(
+                  titleStyle: TextStyle(
+                    fontSize: 0,
+                  ),
+                  titlePadding: EdgeInsets.all(2),
+                  middleText: '로그인 하시겠습니까?',
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.off(() => LoginPage());
+                      },
+                      child: Text('확인'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text('취소'),
+                    ),
+                  ],
+                );
               } else {
-                _showToast(context, _.isPushed);
-                _.setIsPushed();
+                if (!_.isFavorite) {
+                  _.setFavorite();
+                  Toast.showToast(context,
+                      message:
+                          !_.isFavorite ? '찜 목록에 추가되었습니다.' : '찜 목록에서 삭제되었습니다.');
+                  _.setIsFavorite();
+                } else {
+                  _.setFavorite();
+                  Toast.showToast(context,
+                      message:
+                          !_.isFavorite ? '찜 목록에 추가되었습니다.' : '찜 목록에서 삭제되었습니다.');
+                  _.setIsFavorite();
+                }
               }
             }
           },
-          icon: Icon(
-            !_.isPushed ? Icons.favorite_border : Icons.favorite,
-            color: Colors.black,
+          behavior: HitTestBehavior.translucent,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: omitNumber
+                  ? [
+                      Icon(
+                        !_.isFavorite ? Icons.favorite_border : Icons.favorite,
+                        color: !_.isFavorite ? Colors.black : Colors.redAccent,
+                      ),
+                    ]
+                  : [
+                      Icon(
+                        !_.isFavorite ? Icons.favorite_border : Icons.favorite,
+                        color: !_.isFavorite ? Colors.black : Colors.redAccent,
+                      ),
+                      Text('${_.favoriteUidList.length}'),
+                    ],
+            ),
           ),
         );
       },
-    );
-  }
-
-  void _showToast(BuildContext context, bool isPushed) async {
-    if (!rootController.isActive) {
-      rootController.setIsActive();
-      OverlayEntry entry = OverlayEntry(
-        builder: (context) => Toast(),
-      );
-      Overlay.of(context)!.insert(entry);
-      await Future.delayed(Duration(milliseconds: 300));
-      rootController.setVisible();
-      await Future.delayed(Duration(seconds: 2));
-      rootController.setVisible();
-      await Future.delayed(Duration(milliseconds: 300));
-      entry.remove();
-      rootController.setIsActive();
-    }
-  }
-}
-
-class Toast extends StatelessWidget {
-  Toast({Key? key}) : super(key: key);
-
-  final rootController = Get.find<RootController>();
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Opacity(
-          opacity: 0.7,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 120),
-            child: Material(
-              color: Colors.transparent,
-              child: GetBuilder<RootController>(
-                builder: (_) {
-                  return AnimatedOpacity(
-                    opacity: _.visible ? 1.0 : 0.0,
-                    duration: Duration(milliseconds: 300),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        _.isPushed ? '찜 목록에 추가되었습니다.' : '찜 목록에서 삭제되었습니다.',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

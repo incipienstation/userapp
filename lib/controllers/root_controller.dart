@@ -1,12 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+
+
+final firestore = FirebaseFirestore.instance;
+final auth = FirebaseAuth.instance;
 
 class RootController extends GetxController {
   List<QueryDocumentSnapshot<Map<String, dynamic>>> stores = [];
+  Stream<QuerySnapshot>? userStream;
+  bool userExists = false;
 
   Future<void> fetchStores() async {
     try {
-      final res = await FirebaseFirestore.instance.collection('store').get();
+      final res = await firestore.collection('store').get();
       if (res.docs.isNotEmpty) {
         stores = res.docs;
       }
@@ -16,30 +23,29 @@ class RootController extends GetxController {
     }
   }
 
+  Future<bool> fetchUser() async {
+    if (auth.currentUser == null) {
+      userStream = null;
+      userExists = false;
+    } else {
+      try {
+        final res = firestore.collection('user').where('uid', isEqualTo: auth.currentUser?.uid).snapshots();
+        userStream = res;
+        userExists = true;
+      } on Exception catch (e) {
+        print(e);
+        userStream = null;
+        userExists = false;
+      }
+    }
+    return userExists;
+  }
+
+
   @override
   void onInit() {
     super.onInit();
     fetchStores();
-  }
-
-
-  bool isPushed = false;
-
-  setIsPushed() {
-    isPushed = !isPushed;
-    update();
-  }
-
-  bool isActive = false;
-
-  setIsActive() {
-    isActive = !isActive;
-  }
-
-  bool visible = false;
-
-  setVisible() {
-    visible = !visible;
-    update();
+    fetchUser();
   }
 }

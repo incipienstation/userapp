@@ -98,7 +98,7 @@ class StoreListNavigation extends StatelessWidget {
                   controller: listViewController,
                   itemCount: storesWithinCategory.length,
                   itemBuilder: (_, j) {
-                    return CustomListTile(listViewIndex: j, storesWithinCategory: storesWithinCategory,);
+                    return CustomListTile(listViewIndex: j, stores: storesWithinCategory,);
                   }
                 );
               },

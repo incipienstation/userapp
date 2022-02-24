@@ -6,7 +6,7 @@ class Menu {
 
   Menu({required this.name, required this.price});
 
-  factory Menu.fromDoc(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+  factory Menu.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     return Menu(
       name: doc['name'],
       price: doc['price'],
