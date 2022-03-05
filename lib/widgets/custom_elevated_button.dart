@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CustomElevatedButton extends StatelessWidget {
-  final String title;
+  final Widget child;
   final pageRoute;
 
-  const CustomElevatedButton({Key? key, required this.title, this.pageRoute}) : super(key: key);
+  const CustomElevatedButton({Key? key, required this.child, this.pageRoute}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: Colors.redAccent,
@@ -19,7 +19,7 @@ class CustomElevatedButton extends StatelessWidget {
               ),
           ),
           onPressed: pageRoute,
-          child: Text('$title')
+          child: child,
       ),
     );
   }

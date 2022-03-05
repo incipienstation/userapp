@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
-class UserPageController extends GetxController {
+class UserController extends GetxController {
   bool isLoggedIn;
 
-  UserPageController({required this.isLoggedIn}) {
+  UserController({required this.isLoggedIn}) {
     update();
   }
 

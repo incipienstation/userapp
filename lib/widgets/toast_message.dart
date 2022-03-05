@@ -17,38 +17,35 @@ class Toast extends StatelessWidget {
     return SafeArea(
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: Opacity(
-          opacity: 0.7,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 120),
-            child: Material(
-              color: Colors.transparent,
-              child: GetBuilder<ToastController>(
-                builder: (_) {
-                  return AnimatedOpacity(
-                    opacity: _.visible ? 1.0 : 0.0,
-                    duration: Duration(milliseconds: 300),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 8,
-                        horizontal: 20,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        message,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.normal,
-                        ),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 120),
+          child: Material(
+            color: Colors.transparent,
+            child: GetBuilder<ToastController>(
+              builder: (_) {
+                return AnimatedOpacity(
+                  opacity: _.visible ? 1.0 : 0.0,
+                  duration: Duration(milliseconds: 300),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 20,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Color(0xff444444),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      message,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ),

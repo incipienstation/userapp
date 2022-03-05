@@ -106,7 +106,7 @@ class LoginPage extends StatelessWidget {
                   },
                 ),
                 CustomElevatedButton(
-                  title: '로그인',
+                  child: Text('로그인'),
                   pageRoute: () async {
                     if (_formKey.currentState!.validate()) {
                       try {

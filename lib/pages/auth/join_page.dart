@@ -92,7 +92,7 @@ class JoinPage extends StatelessWidget {
                   },
                 ),
                 CustomElevatedButton(
-                    title: '회원가입',
+                    child: Text('회원가입'),
                     pageRoute: () async {
                       if (_formKey.currentState!.validate()) {
                         try {

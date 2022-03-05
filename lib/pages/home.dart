@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:userapp/controllers/category_controller.dart';
+import 'package:userapp/controllers/shopping_basket_controller.dart';
 import 'package:userapp/pages/store/store_navigation_page.dart';
 import 'package:userapp/widgets/bottom_navigation_bar.dart';
 import 'package:userapp/widgets/shopping_basket_button.dart';
@@ -8,6 +9,7 @@ import 'package:userapp/widgets/shopping_basket_button.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,10 @@ class Home extends StatelessWidget {
       },
       child: SafeArea(
         child: Scaffold(
-          floatingActionButton: ShoppingBasketButton(),
+          floatingActionButton: GetBuilder<ShoppingBasketController>(
+            init: Get.find<ShoppingBasketController>(),
+            builder: (_) => ShoppingBasketButton(display: _.isNotEmpty()),
+          ),
           appBar: AppBar(title: Text('YAM', style: TextStyle(fontSize: 28),), automaticallyImplyLeading: false,),
           body: CategoryGrid(),
           bottomNavigationBar: CustomBottomNavigationBar(currentIndex: 2,),
@@ -52,7 +57,7 @@ class CategoryGrid extends StatelessWidget {
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(42),
                           )
-                        )
+                        ),
                       ),
                       onPressed: () {
                         Get.to(() => StoreListNavigation(), arguments: index);

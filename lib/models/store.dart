@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Store {
+  final String id;
   final String name;
   final String address;
   final String category;
@@ -9,6 +10,7 @@ class Store {
   // final CollectionReference<Map<String, dynamic>>? menu;
 
   Store({
+    required this.id,
     required this.name,
     required this.address,
     required this.category,
@@ -19,6 +21,7 @@ class Store {
 
   factory Store.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     return Store(
+      id: doc.id,
       name: doc['name'],
       address: doc['address'],
       category: doc['category'],

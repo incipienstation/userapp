@@ -26,7 +26,7 @@ class CustomListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Store store = Store.fromDoc(stores[listViewIndex]);
 
-    return GestureDetector(
+    return InkWell(
       onDoubleTap: () {
         print(stores[listViewIndex].reference.id);
       },
@@ -39,7 +39,8 @@ class CustomListTile extends StatelessWidget {
           popGesture: false,
         );
       },
-      child: Container(
+      splashColor: Colors.redAccent,
+      child: Ink(
         height: 130,
         decoration: BoxDecoration(
             color: Colors.white,
@@ -48,7 +49,7 @@ class CustomListTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            Ink(
               width: 120,
               color: Colors.greenAccent,
               child: Center(
@@ -59,7 +60,7 @@ class CustomListTile extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Container(
+              child: Ink(
                 padding: EdgeInsets.all(20),
                 color: Colors.cyan,
                 child: Column(
@@ -78,7 +79,7 @@ class CustomListTile extends StatelessWidget {
                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal,),
                     ),
                     Text(
-                      '배달요금 ${Utility.intToStringWithFormat(store.minDeliveryAmount)}원',
+                      '배달요금 미정',
                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal,),
                     ),
                   ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:userapp/controllers/category_controller.dart';
 import 'package:userapp/controllers/root_controller.dart';
+import 'package:userapp/controllers/shopping_basket_controller.dart';
 import 'package:userapp/widgets/custom_back_button.dart';
 import 'package:userapp/widgets/custom_list_tile.dart';
 import 'package:userapp/widgets/shopping_basket_button.dart';
@@ -12,6 +13,7 @@ class StoreListNavigation extends StatelessWidget {
 
   final categoryController = Get.find<CategoryController>();
   final rootController = Get.find<RootController>();
+  final shoppingBasketController = Get.find<ShoppingBasketController>();
   final int index = Get.arguments;
 
   @override
@@ -35,7 +37,9 @@ class StoreListNavigation extends StatelessWidget {
       builder: (_) {
         return SafeArea(
           child: Scaffold(
-            floatingActionButton: ShoppingBasketButton(),
+            floatingActionButton: GetBuilder<ShoppingBasketController>(
+              builder: (_) => ShoppingBasketButton(display: _.isNotEmpty()),
+            ),
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(120),
               child: AppBar(

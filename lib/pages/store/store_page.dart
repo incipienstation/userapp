@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:userapp/controllers/store_controller.dart';
 import 'package:userapp/controllers/toast_controller.dart';
 import 'package:userapp/models/menu.dart';
 import 'package:userapp/models/store.dart';
 import 'package:userapp/pages/auth/login_page.dart';
+import 'package:userapp/pages/menu/menu_page.dart';
 import 'package:userapp/utils/utility.dart';
 import 'package:userapp/widgets/custom_back_button.dart';
 import 'package:userapp/widgets/custom_progress_indicator.dart';
@@ -21,9 +23,10 @@ class StorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storeController = Get.put(StoreController(storeDocId: storeDocId));
+
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: ShoppingBasketButton(),
+        floatingActionButton: ShoppingBasketButton(display: true),
         body: Center(
           child: FutureBuilder(
             future: Future.wait([
@@ -32,13 +35,13 @@ class StorePage extends StatelessWidget {
             ]),
             builder: (c, AsyncSnapshot<List<bool>> snapshot) {
               if (snapshot.hasData && snapshot.data![1]) {
-                print('futurebuilder 성공적');
+                print('DB upload success');
                 return MenuListView(
                   menuList: storeController.menuList,
                   store: storeController.store,
                 );
               } else {
-                print('futurebuilder 실패적');
+                print('DB upload fail');
                 return CustomProgressIndicator();
               }
             },
@@ -102,7 +105,11 @@ class MenuListView extends StatelessWidget {
               ),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(width: 2, color: Color(0xffdddddd))),
+                ),
                 child: Column(
                   children: [
                     Container(
@@ -128,6 +135,14 @@ class MenuListView extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          _buildMetaDataTile('최소주문금액',
+                              '${Utility.intToStringWithFormat(store.minDeliveryAmount)}원'),
+                          _buildMetaDataTile('배달요금', '미정'),
+                          _buildMetaDataTile('가게위치', store.address),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -136,34 +151,44 @@ class MenuListView extends StatelessWidget {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (c, i) {
-                  return Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                width: 2, color: Color(0xffdddddd)))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Text(
-                            menuList[i].name,
-                            style: TextStyle(
-                              fontSize: 18,
+                  return InkWell(
+                    onTap: () => showMaterialModalBottomSheet(
+                      closeProgressThreshold: 0.3,
+                      context: context,
+                      builder: (context) => MenuPage(
+                        store: store,
+                        menu: menuList[i],
+                      ),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  width: 2, color: Color(0xffdddddd)))),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              menuList[i].name,
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Text(
-                            '${Utility.intToStringWithFormat(menuList[i].price)}원',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
+                          Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              '${Utility.intToStringWithFormat(menuList[i].price)}원',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -178,6 +203,32 @@ class MenuListView extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Padding _buildMetaDataTile(String text1, String text2) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            width: 100,
+            child: Text(
+              text1,
+              style: TextStyle(
+                  color: Colors.black54, fontWeight: FontWeight.normal),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Text(
+              text2,
+              style: TextStyle(fontWeight: FontWeight.normal),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
