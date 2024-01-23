@@ -8,7 +8,7 @@ import 'package:userapp/widgets/shopping_basket_button.dart';
 
 
 class Home extends StatelessWidget {
-  Home({Key? key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
 
   @override
